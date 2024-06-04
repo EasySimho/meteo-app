@@ -60,6 +60,45 @@
   z-index: -1;
 }
 
+html:not(.dark) .wind::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  backdrop-filter: brightness(1); /* Adjust brightness as needed */
+  z-index: -1;
+}
+
+.uv{
+  position: relative;
+  overflow: hidden;
+  z-index: 1;
+}
+
+.uv::before{
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  backdrop-filter: brightness(0.4);
+  z-index: -1;
+}
+
+html:not(.dark) .uv::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  backdrop-filter: brightness(1); /* Adjust brightness as needed */
+  z-index: -1;
+}
+
 .rischio{
   width: 7vh;
   aspect-ratio: 1/1;
@@ -108,6 +147,20 @@
   z-index: -1;
 }
 
+html:not(.dark) .cloud::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  backdrop-filter: brightness(1); /* Adjust brightness as needed */
+  z-index: -1;
+}
+
+
+
+
 #windmill{
   height: 90%;
   position: absolute;
@@ -124,7 +177,7 @@
     class="bg-gradient-to-r from-blue-400 to-purple-600 min-h-screen flex items-center justify-center light dark:bg-gradient-to-r dark:from-gray-800 dark:via-gray-900 dark:to-black"
   >
     <div class="container mx-auto p-6">
-      <div class="flex justify-end items-center mb-6 absolute top-4 right-4">
+      <div class="flex justify-end items-center mb-6 absolute top-4 right-4 altro">
         <div class="mr-4">
           <select
             class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
@@ -165,7 +218,7 @@
         <div
           class="weather-box bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md lg:row-span-2"
         >
-          <h2 class="text-2xl font-bold mb-2 dark:text-gray-300">
+          <h2 class="text-3xl font-bold mb-2 dark:text-gray-300">
             <%= weather.latitude %>, <%= weather.longitude %>
           </h2>
           <p class="text-gray-700 dark:text-gray-300">
@@ -181,7 +234,7 @@
         <div
           class="weather-box bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md wind relative"
         >
-          <h2 class="text-2xl font-bold mb-2 dark:text-gray-300">Wind Speed</h2>
+          <h2 class="text-3xl font-bold mb-2 dark:text-gray-300">Wind Speed</h2>
           <p class="text-gray-700 dark:text-gray-300">
             <%= weather.currently.windSpeed %> m/s
           </p>
@@ -190,7 +243,7 @@
         <div
           class="weather-box bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md"
         >
-          <h2 class="text-2xl font-bold mb-2 dark:text-gray-300">Pressure</h2>
+          <h2 class="text-3xl font-bold mb-2 dark:text-gray-300">Pressure</h2>
           <p class="text-gray-700 dark:text-gray-300">
             <%= weather.currently.pressure %> hPa
           </p>
@@ -198,7 +251,7 @@
         <div
           class="weather-box bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md"
         >
-          <h2 class="text-2xl font-bold mb-2 dark:text-gray-300">Ozone</h2>
+          <h2 class="text-3xl font-bold mb-2 dark:text-gray-300">Ozone</h2>
           <p class="text-gray-700 dark:text-gray-300">
             <%= weather.currently.ozone %> DU
           </p>
@@ -206,7 +259,7 @@
         <div
           class="weather-box bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md lg:col-span-2 lg:row-span-2"
         >
-          <h2 class="text-2xl font-bold mb-2 dark:text-gray-300">Humidity</h2>
+          <h2 class="text-3xl font-bold mb-2 dark:text-gray-300">Humidity</h2>
           <p class="text-gray-700 dark:text-gray-300">
             <div class="chart-container shadow-md">
               <div class="chart-fill" id="humidityChart"></div>
@@ -220,26 +273,27 @@
         <div
           class="weather-box bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md cloud"
         >
-          <h2 class="text-2xl font-bold mb-2 dark:text-gray-300">Cloudiness</h2>
+          <h2 class="text-3xl font-bold mb-2 dark:text-gray-300">Cloudiness</h2>
           <p class="text-gray-700 dark:text-gray-300">
             <%= weather.currently.cloudCover * 100 %> %
           </p>
         </div>
         <div
-          class="weather-box bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md relative"
+          class="weather-box bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md relative uv"
         >
-          <h2 class="text-2xl font-bold mb-2 dark:text-gray-300">UV Index</h2>
+          <h2 class="text-3xl font-bold mb-2 dark:text-gray-300">UV Index</h2>
           <p class="text-gray-700 dark:text-gray-300" id="uvValue">
             <%= weather.currently.uvIndex %>
           </p>
           <div class="rischio">
             Safe
           </div>
+          
         </div>
         <div
           class="weather-box bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md"
         >
-          <h2 class="text-2xl font-bold mb-2 dark:text-gray-300">Visibility</h2>
+          <h2 class="text-3xl font-bold mb-2 dark:text-gray-300">Visibility</h2>
           <p class="text-gray-700 dark:text-gray-300">
             <%= weather.currently.visibility %> km
           </p>
@@ -319,7 +373,7 @@
             temperature: "Temperatura",
             condition: "Condizione",
             humidity: "Umidità",
-            windSpeed: "Velocità del Vento",
+            windSpeed: "Velocità vento",
             pressure: "Pressione",
             cloudiness: "Copertura nuvolosa",
             uvIndex: "Indice UV",
