@@ -113,18 +113,7 @@ html:not(.dark) .uv::before {
   font-weight: 500;
   text-transform: uppercase;
 }
-@media screen and (max-width: 768px){
 
-  .chart-container{
-    width: 15vh;
-  }
-
-  .rischio{
-    width: 10vh;
-    font-size: 1.5rem;
-  }
-  
-}
 
 .cloud{
   background-image: url("/images/cloud.svg");
@@ -169,14 +158,76 @@ html:not(.dark) .cloud::before {
  
 }
 
+.city{
+  font-size: 3vh;
+  font-weight: 600;
+  color: rgb(209 213 219);
+  margin-bottom: 2rem;
+}
 
+@media screen and (max-width: 1540px){
+  
+#windmill{
+  height: 60%;
+ 
+}
+ud{
+  background-image: none;
+}
+}
+
+@media screen and (max-width: 1300px){
+  .rischio{
+  width: 10vw;
+  font-size: 1.5rem;
+  position: static;
+
+
+}
+#windmill{
+  height: 60%;
+ 
+}
+
+.cloud{
+  background-image: none;
+}
+}
+
+
+@media screen and (max-width: 768px){
+
+.chart-container{
+  width: 15vh;
+}
+
+#windmill{
+  height: 70%;
+ 
+}
+
+.city{
+  width: 100%;
+  text-align: center;
+  font-size: 10vw;
+}
+
+}
+
+@media screen and (max-width: 640px){
+  #windmill{
+  height: 80%;
+ 
+}
+}
 
     </style>
   </head>
   <body
     class="bg-gradient-to-r from-blue-400 to-purple-600 min-h-screen flex items-center justify-center light dark:bg-gradient-to-r dark:from-gray-800 dark:via-gray-900 dark:to-black"
   >
-    <div class="container mx-auto p-6">
+    <div class="container mx-auto p-6 relative">
+
       <div class="flex justify-end items-center mb-6 absolute top-4 right-4 altro">
         <div class="mr-4">
           <select
@@ -212,6 +263,7 @@ html:not(.dark) .cloud::before {
         </button>
       </form>
       <% if (weather) { %>
+    <h3 class="city uppercase"><%= weather.city %></h3>
       <div
         class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6"
       >
@@ -257,7 +309,7 @@ html:not(.dark) .cloud::before {
           </p>
         </div>
         <div
-          class="weather-box bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md lg:col-span-2 lg:row-span-2"
+          class="weather-box bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md sm:col-span-2  lg:row-span-2"
         >
           <h2 class="text-3xl font-bold mb-2 dark:text-gray-300">Humidity</h2>
           <p class="text-gray-700 dark:text-gray-300">
@@ -275,7 +327,7 @@ html:not(.dark) .cloud::before {
         >
           <h2 class="text-3xl font-bold mb-2 dark:text-gray-300">Cloudiness</h2>
           <p class="text-gray-700 dark:text-gray-300">
-            <%= weather.currently.cloudCover * 100 %> %
+            <%= (weather.currently.cloudCover * 100).toFixed(0) %> %
           </p>
         </div>
         <div

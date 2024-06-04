@@ -46,6 +46,7 @@ app.get('/weather', async (req, res) => {
         const weather = weatherResponse.data;
         weather.latitude = lat;
         weather.longitude = lng;
+        weather.city = geoResponse.data.results[0].components.city || geoResponse.data.results[0].components.town || geoResponse.data.results[0].components.village || city;
 
 
 
