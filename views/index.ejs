@@ -4,6 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link href="/css/tailwind.css" rel="stylesheet" />
+    <link rel="stylesheet" href="styles.css" />
     <link
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
@@ -20,13 +21,110 @@
         font-size: 1.5rem;
         margin-bottom: 1rem;
       }
+
+      .chart-container {
+  width: 20vh;
+  aspect-ratio: 1/1;
+  border-radius: 50%;
+  background-color: rgb(17 24 39);
+  position: relative;
+  margin: 20px auto;
+}
+
+.chart-fill {
+  width: 100%;
+  height: 100%;
+  clip-path: circle(50%);
+  background-image: url("/images/water.svg");
+  background-size: cover;
+  background-position:  center;
+
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+.wind{
+  position: relative;
+  overflow: hidden;
+  z-index: 1;
+}
+
+.wind::before{
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  backdrop-filter: brightness(0.4);
+  z-index: -1;
+}
+
+.rischio{
+  width: 7vh;
+  aspect-ratio: 1/1;
+  border-radius: 50%;
+  background-color: rgb(255, 0, 0);
+  position: absolute;
+  margin: 20px auto;
+  top: 0;
+  right: 5%;
+  display: grid;
+  place-content: center;
+  font-weight: 500;
+  text-transform: uppercase;
+}
+@media screen and (max-width: 768px){
+
+  .chart-container{
+    width: 15vh;
+  }
+
+  .rischio{
+    width: 10vh;
+    font-size: 1.5rem;
+  }
+  
+}
+
+.cloud{
+  background-image: url("/images/cloud.svg");
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position:  5rem 0;
+  position: relative;
+  overflow: hidden;
+  z-index: 1;
+}
+
+.cloud::before{
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  backdrop-filter: brightness(0.4);
+  z-index: -1;
+}
+
+#windmill{
+  height: 90%;
+  position: absolute;
+  bottom: 0;
+  right: 5%;
+ 
+}
+
+
+
     </style>
   </head>
   <body
     class="bg-gradient-to-r from-blue-400 to-purple-600 min-h-screen flex items-center justify-center light dark:bg-gradient-to-r dark:from-gray-800 dark:via-gray-900 dark:to-black"
   >
     <div class="container mx-auto p-6">
-      <div class="flex justify-end items-center mb-6">
+      <div class="flex justify-end items-center mb-6 absolute top-4 right-4">
         <div class="mr-4">
           <select
             class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
@@ -43,10 +141,10 @@
           <i id="theme-icon" class="fas fa-moon"></i>
         </button>
       </div>
-      <h1 class="text-4xl font-extrabold text-center text-white mb-6">
+      <h1 class="text-5xl font-extrabold text-center text-white mb-6">
         Weather
       </h1>
-      <form action="/weather" method="get" class="text-center mb-6">
+      <form action="/weather" method="get" class="text-center mb-32">
         <input
           type="text"
           name="city"
@@ -65,7 +163,7 @@
         class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6"
       >
         <div
-          class="weather-box bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md"
+          class="weather-box bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md lg:row-span-2"
         >
           <h2 class="text-2xl font-bold mb-2 dark:text-gray-300">
             <%= weather.latitude %>, <%= weather.longitude %>
@@ -73,25 +171,21 @@
           <p class="text-gray-700 dark:text-gray-300">
             <%= weather.currently.temperature %> °C
           </p>
-          <p class="text-gray-700 dark:text-gray-300">
+          <p
+            class="text-gray-700 dark:text-gray-300 w-full flex justify-center"
+          >
             <span id="weather-icon"></span>
           </p>
         </div>
+        
         <div
-          class="weather-box bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md"
-        >
-          <h2 class="text-2xl font-bold mb-2 dark:text-gray-300">Humidity</h2>
-          <p class="text-gray-700 dark:text-gray-300">
-            <%= weather.currently.humidity * 100 %> %
-          </p>
-        </div>
-        <div
-          class="weather-box bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md"
+          class="weather-box bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md wind relative"
         >
           <h2 class="text-2xl font-bold mb-2 dark:text-gray-300">Wind Speed</h2>
           <p class="text-gray-700 dark:text-gray-300">
             <%= weather.currently.windSpeed %> m/s
           </p>
+          <img src="/images/windmill.svg" id="windmill">
         </div>
         <div
           class="weather-box bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md"
@@ -104,18 +198,43 @@
         <div
           class="weather-box bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md"
         >
+          <h2 class="text-2xl font-bold mb-2 dark:text-gray-300">Ozone</h2>
+          <p class="text-gray-700 dark:text-gray-300">
+            <%= weather.currently.ozone %> DU
+          </p>
+        </div>
+        <div
+          class="weather-box bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md lg:col-span-2 lg:row-span-2"
+        >
+          <h2 class="text-2xl font-bold mb-2 dark:text-gray-300">Humidity</h2>
+          <p class="text-gray-700 dark:text-gray-300">
+            <div class="chart-container shadow-md">
+              <div class="chart-fill" id="humidityChart"></div>
+            </div>
+            <p class="text-gray-700 dark:text-gray-300 text-center" id="humidityValue">
+              <%= (weather.currently.humidity * 100).toFixed(0) %> % 
+            </p>
+            
+          </p>
+        </div>
+        <div
+          class="weather-box bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md cloud"
+        >
           <h2 class="text-2xl font-bold mb-2 dark:text-gray-300">Cloudiness</h2>
           <p class="text-gray-700 dark:text-gray-300">
             <%= weather.currently.cloudCover * 100 %> %
           </p>
         </div>
         <div
-          class="weather-box bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md"
+          class="weather-box bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md relative"
         >
           <h2 class="text-2xl font-bold mb-2 dark:text-gray-300">UV Index</h2>
-          <p class="text-gray-700 dark:text-gray-300">
+          <p class="text-gray-700 dark:text-gray-300" id="uvValue">
             <%= weather.currently.uvIndex %>
           </p>
+          <div class="rischio">
+            Safe
+          </div>
         </div>
         <div
           class="weather-box bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md"
@@ -125,14 +244,7 @@
             <%= weather.currently.visibility %> km
           </p>
         </div>
-        <div
-          class="weather-box bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md"
-        >
-          <h2 class="text-2xl font-bold mb-2 dark:text-gray-300">Ozone</h2>
-          <p class="text-gray-700 dark:text-gray-300">
-            <%= weather.currently.ozone %> DU
-          </p>
-        </div>
+        
       </div>
       <% } %> <% if (error) { %>
       <p class="text-red-500 text-center mt-6"><%= error %></p>
@@ -187,7 +299,6 @@
             languageLabel: "Language:",
             optionEnglish: "English",
             optionItalian: "Italian",
-            latitude: "Latitude, Longitude",
             temperature: "Temperature",
             condition: "Condition",
             humidity: "Humidity",
@@ -205,7 +316,6 @@
             languageLabel: "Lingua:",
             optionEnglish: "Inglese",
             optionItalian: "Italiano",
-            latitude: "Latitudine, Longitudine",
             temperature: "Temperatura",
             condition: "Condizione",
             humidity: "Umidità",
@@ -232,14 +342,15 @@
 
         const weatherBoxes = document.querySelectorAll(".weather-box");
         const weatherBoxTitles = [
-          "latitude",
-          "humidity",
+          "",
           "windSpeed",
           "pressure",
+          "ozone",
+          "humidity",
           "cloudiness",
           "uvIndex",
           "visibility",
-          "ozone",
+          
         ];
 
         weatherBoxes.forEach((box, index) => {
@@ -261,23 +372,82 @@
       // Funzione per ottenere l'icona meteo basata sulla condizione
       function weatherIcon(condition) {
         const iconMap = {
-          "clear-day": "fas mt-6 fa-sun fa-2xl mt-6",
-          "clear-night": "fas mt-6 fa-2xl fa-moon",
-          rain: "fas mt-6 fa-2xl fa-cloud-rain",
-          snow: "fas mt-6 fa-2xl fa-snowflake",
-          sleet: "fas mt-6 fa-2xl fa-cloud-meatball",
-          wind: "fas mt-6 fa-2xl fa-wind",
-          fog: "fas mt-6 fa-2xl fa-smog",
-          cloudy: "fas mt-6 fa-2xl fa-cloud",
-          "partly-cloudy-day": "fas mt-6 fa-2xl fa-cloud-sun",
-          "partly-cloudy-night": "fas mt-6 fa-2xl fa-cloud-moon",
-          hail: "fas mt-6 fa-2xl fa-cloud-showers-heavy",
-          thunderstorm: "fas mt-6 fa-2xl fa-bolt",
-          tornado: "fas mt-6 fa-2xl fa-poo-storm",
+          "clear-day": "fas mt-6 fa-sun mt-6 text-9xl",
+          "clear-night": "fas mt-6 fa-moon text-9xl",
+          rain: "fas mt-6 fa-cloud-rain text-9xl",
+          snow: "fas mt-6 fa-snowflake text-9xl",
+          sleet: "fas mt-6 fa-cloud-meatball text-9xl",
+          wind: "fas mt-6 fa-wind text-9xl",
+          fog: "fas mt-6 fa-smog text-9xl",
+          cloudy: "fas mt-6 fa-cloud text-9xl",
+          "partly-cloudy-day": "fas mt-6 fa-cloud-sun text-9xl",
+          "partly-cloudy-night": "fas mt-6 fa-cloud-moon text-9xl",
+          hail: "fas mt-6 fa-cloud-showers-heavy text-9xl",
+          thunderstorm: "fas mt-6 fa-bolt text-9xl",
+          tornado: "fas mt-6 fa-poo-storm text-9xl",
         };
 
-        return iconMap[condition] || "fas fa-2xl fa-question";
+        return iconMap[condition] || "fas fa-question";
       }
+    
+
+    addEventListener('DOMContentLoaded', () => {
+      let humidityChart = document.querySelector('.chart-fill');
+    let humidityValue = document.getElementById('humidityValue');
+
+    let humidity = parseFloat(humidityValue.textContent.replace(/%/, ""));
+
+      console.log(humidity);
+      humidityChart.style.clipPath = `circle(${humidity / 2}%)`;
+    });
+
+
+    addEventListener('DOMContentLoaded', () => {
+
+      let uvValue = document.getElementById('uvValue');
+
+      switch (parseInt(uvValue.textContent)) {
+        case 0:
+          document.querySelector('.rischio').style.backgroundColor = 'rgb(255, 255, 255)';
+          break;
+        case 1:
+          document.querySelector('.rischio').style.backgroundColor = 'rgb(255, 255, 255)';
+          break;
+        case 2:
+          document.querySelector('.rischio').style.backgroundColor = 'rgb(255, 255, 255)';
+          break;
+        case 3:
+          document.querySelector('.rischio').style.backgroundColor = 'rgb(0, 255, 0)';
+          break;
+        case 4:
+          document.querySelector('.rischio').style.backgroundColor = 'rgb(255, 255, 0)';
+          break;
+        case 5:
+          document.querySelector('.rischio').style.backgroundColor = 'rgb(255, 128, 0)';
+          break;
+        case 6:
+          document.querySelector('.rischio').style.backgroundColor = 'rgb(255, 0, 0)';
+          break;
+        case 7:
+          document.querySelector('.rischio').style.backgroundColor = 'rgb(255, 0, 0)';
+          break;
+        case 8:
+          document.querySelector('.rischio').style.backgroundColor = 'rgb(255, 0, 0)';
+          break;
+        case 9:
+          document.querySelector('.rischio').style.backgroundColor = 'rgb(255, 0, 0)';
+          break;
+        case 10:
+          document.querySelector('.rischio').style.backgroundColor = 'rgb(255, 0, 0)';
+          break;
+        default:
+          document.querySelector('.rischio').style.backgroundColor = 'rgb(255, 0, 0)';
+          break;
+      }
+      
+
+    });
+
 
       // Imposta l'icona meteo al caricamento della pagina
     </script>

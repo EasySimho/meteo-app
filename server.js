@@ -44,6 +44,10 @@ app.get('/weather', async (req, res) => {
         const weatherUrl = `https://api.pirateweather.net/forecast/${pirateWeatherApiKey}/${lat},${lng}?units=si`;
         const weatherResponse = await axios.get(weatherUrl);
         const weather = weatherResponse.data;
+        weather.latitude = lat;
+        weather.longitude = lng;
+
+
 
         // Assegna la classe dell'icona meteo
         weather.iconClass = weatherIcon(weather.currently.icon);
